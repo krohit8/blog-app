@@ -1,17 +1,7 @@
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
 
-const app = new Hono<{
-  Bindings: {
-    DATABASE_URL: string;
-    JWT_SECRET: string;
-  };
-  Variables: {
-    userId: string;
-  };
-}>();
-
-export const blogMiddleware = app.use("/blog/*", async (c, next) => {
+export const authMiddleware = async (c: any, next: any) => {
   try {
     const authHeader = c.req.header("Authorization");
 
@@ -34,4 +24,4 @@ export const blogMiddleware = app.use("/blog/*", async (c, next) => {
     c.status(401);
     return c.json({ error: "unauthorized" });
   }
-});
+};

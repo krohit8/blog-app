@@ -19,7 +19,6 @@ userRouter.post("/signup", async (c) => {
         password: body.password,
       },
     });
-
     const token = await sign({ id: user.id }, c.env.JWT_SECRET);
     return c.json({ token });
   } catch (error) {
@@ -38,6 +37,10 @@ userRouter.post("/signin", async (c) => {
   if (!user) {
     c.status(403);
     return c.json({ error: "user not found" });
+  }
+  if (body.password != user.password) {
+    c.status(401);
+    return c.json({ error: "invalid pass" });
   }
   const token = await sign({ id: user.id }, c.env.JWT_SECRET);
   return c.json({ token });
