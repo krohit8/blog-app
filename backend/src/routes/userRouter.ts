@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { sign } from "hono/jwt";
 import { createPrismaClient } from "../../prisma/Client";
+import bcrypt from "bcryptjs";
 import { signInInput , signUpInput} from "@krohit8/blog-common";
 export const userRouter = new Hono<{
   Bindings: {
@@ -18,10 +19,11 @@ userRouter.post("/signup", async (c) => {
 		return c.json({ error: "invalid input" });
   }
   try {
+    const hashedPassword = bcrypt.hashSync(body.password)
     const user = await prisma.user.create({
       data: {
         email: body.email,
-        password: body.password,
+        password: hashedPassword,
       },
     });
     const token = await sign({ id: user.id }, c.env.JWT_SECRET);
@@ -48,7 +50,8 @@ userRouter.post("/signin", async (c) => {
     c.status(403);
     return c.json({ error: "user not found" });
   }
-  if (body.password != user.password) {
+  const isValidPassword = bcrypt.compareSync(body.password,user.password)
+  if (!isValidPassword) {
     c.status(401);
     return c.json({ error: "invalid pass" });
   }
