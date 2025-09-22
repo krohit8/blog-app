@@ -57,6 +57,12 @@ blogRouter.put("/", async (c) => {
   return c.text("post updated");
 });
 
+blogRouter.get("/bulk", async (c) => {
+  const prisma = createPrismaClient(c.env.DATABASE_URL);
+  const post = await prisma.post.findMany({});
+  return c.json(post);
+});
+
 blogRouter.get("/:id", async (c) => {
   const prisma = createPrismaClient(c.env.DATABASE_URL);
   const id = c.req.param("id");
@@ -65,11 +71,5 @@ blogRouter.get("/:id", async (c) => {
       id: id,
     },
   });
-  return c.json(post);
-});
-
-blogRouter.get("/bulk", async (c) => {
-  const prisma = createPrismaClient(c.env.DATABASE_URL);
-  const post = await prisma.post.findMany({});
   return c.json(post);
 });

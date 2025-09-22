@@ -1,10 +1,8 @@
-import { Hono } from "hono";
 import { verify } from "hono/jwt";
 
 export const authMiddleware = async (c: any, next: any) => {
   try {
     const authHeader = c.req.header("Authorization");
-
     if (!authHeader) {
       c.status(401);
       return c.json({ error: "unauthorized" });
