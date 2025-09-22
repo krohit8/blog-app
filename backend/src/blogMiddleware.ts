@@ -1,6 +1,7 @@
 import { verify } from "hono/jwt";
+import { Context, Next } from "hono";
 
-export const authMiddleware = async (c: any, next: any) => {
+export const authMiddleware = async (c: Context, next: Next) => {
   try {
     const authHeader = c.req.header("Authorization");
     if (!authHeader) {
