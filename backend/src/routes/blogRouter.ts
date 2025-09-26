@@ -59,7 +59,11 @@ blogRouter.put("/", async (c) => {
 
 blogRouter.get("/bulk", async (c) => {
   const prisma = createPrismaClient(c.env.DATABASE_URL);
-  const post = await prisma.post.findMany({});
+  const post = await prisma.post.findMany({
+    include: {
+      author: true,
+    },
+  });
   return c.json(post);
 });
 
