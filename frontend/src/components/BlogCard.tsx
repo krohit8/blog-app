@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 interface BlogCardProps {
-  id: number;
+  id: string;
   authorName: string;
   title: string;
   content: string;
@@ -14,8 +14,9 @@ export const BlogCard = ({
   content,
   publishedDate,
 }: BlogCardProps) => {
+    console.log("authorname",authorName)
   return (
-    <Link to={`/blog/:${id}`}>
+    <Link to={`/blog/${id}`}>
       <div className="  flex flex-col max-w-4xl mx-auto h-4/12    items-center  ">
         <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
         <div className="flex  text-lg h-12 items-center mt-2  w-full max-w-3xl ">
@@ -61,7 +62,7 @@ export function Avatar({
           size === "small" ? "text-xs" : "text-md"
         } font-semibold text-white `}
       >
-        {name[0]}
+        {name?.[0] || "B"}
       </span>
     </div>
   );
