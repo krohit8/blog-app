@@ -5,6 +5,7 @@ import { Signin } from "./Pages/Signin";
 import { Blogs } from "./Pages/Blogs";
 import { Blog } from "./Pages/Blog";
 import { useEffect } from "react";
+import { Publish } from "./Pages/Publish";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -24,7 +25,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blog/:id" element={<Blog />} />
-          <Route />
+          <Route path="publish" element={<Publish/>}/>
         </Routes>
       </BrowserRouter>
     </>
