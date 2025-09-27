@@ -7,17 +7,17 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
     <div>
       <Appbar />
       <div className="w-full h-full mt-5">
-        <div className="w-full max-w-7xl   flex h-full mx-auto px-4">
-          <div className="flex flex-col w-4/5 pt-4">
-            <div className="text-4xl font-bold">{blog.title}</div>
-            <div className="text-xl font-semibold text-slate-700 mt-4">
+        <div className="w-full max-w-7xl flex flex-col lg:flex-row h-full mx-auto px-4">
+          <div className="flex flex-col w-full lg:w-4/5 pt-4">
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">{blog.title}</div>
+            <div className="text-base sm:text-lg lg:text-xl font-semibold text-slate-700 mt-4 leading-relaxed">
               {blog.content}
             </div>
           </div>
-          <div className="h-screen w-px bg-gray-300 mx-6"></div>
-          <div className="h-full flex w-1.5/5 pl-7">
-            <div className="flex-col mt-12 w-full">
-              <div className="text-2xl font-semibold">Author</div>
+          <div className="hidden lg:block h-screen w-px bg-gray-300 mx-6"></div>
+          <div className="h-full flex w-full lg:w-1/5 pl-0 lg:pl-7 mt-8 lg:mt-0">
+            <div className="flex-col w-full">
+              <div className="text-xl lg:text-2xl font-semibold">Author</div>
               <div className="flex py-2">
                 <div className="pr-2">
                   <Avatar name={blog.author.name || "Anonymous"} />
@@ -26,7 +26,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                   {blog.author.name || "Anonymous"}
                 </div>
               </div>
-              <div className="text-gray-700">
+              <div className="text-gray-700 text-sm lg:text-base">
                 The only way to do great work is to love what you do
               </div>
             </div>

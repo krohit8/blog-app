@@ -9,7 +9,7 @@ export const Blogs = () => {
     return (
       <div>
         <Appbar />
-        <div>
+        <div className="space-y-4">
           <BlogSkeleton />
           <BlogSkeleton />
           <BlogSkeleton />
@@ -19,11 +19,11 @@ export const Blogs = () => {
     );
   }
   return (
-    <div className=" h-screen w-full  ">
-      <div className="mb-8">
+    <div className="min-h-screen w-full">
+      <div className="mb-4 sm:mb-8">
         <Appbar />
       </div>
-      <div>
+      <div className="space-y-4 sm:space-y-6">
         {blogs.map((blog) => (
           <BlogCard
             key={blog.id}

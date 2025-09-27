@@ -16,25 +16,25 @@ export const BlogCard = ({
 }: BlogCardProps) => {
   return (
     <Link to={`/blog/${id}`}>
-      <div className="  flex flex-col max-w-4xl mx-auto h-4/12    items-center  ">
+      <div className="flex flex-col max-w-4xl mx-auto items-center px-4 sm:px-6 lg:px-0">
         <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
-        <div className="flex  text-lg h-12 items-center mt-2  w-full max-w-3xl ">
+        <div className="flex text-sm sm:text-base lg:text-lg h-12 items-center mt-2 w-full max-w-3xl">
           <Avatar name={authorName} />
-          <p className="font-normal pl-4 py-1">
-            {authorName}.
-            <span className="text-slate-600 ml-4">
-              {" "}
+          <p className="font-normal pl-2 sm:pl-4 py-1">
+            <span className="hidden sm:inline">{authorName}.</span>
+            <span className="sm:hidden">{authorName}</span>
+            <span className="text-slate-600 ml-2 sm:ml-4 text-xs sm:text-sm">
               {publishedDate.toDateString()}
             </span>
           </p>
         </div>
-        <div className="flex flex-col max-w-3xl">
-          <h1 className="font-bold text-3xl">{title}</h1>
-          <p className="py-2 font-semibold text-gray-700">
-            {content.slice(0, 180) + "..."}
+        <div className="flex flex-col w-full max-w-3xl">
+          <h1 className="font-bold text-xl sm:text-2xl lg:text-3xl leading-tight">{title}</h1>
+          <p className="py-2 font-semibold text-gray-700 text-sm sm:text-base">
+            {content.slice(0, 120) + (content.length > 120 ? "..." : "")}
           </p>
         </div>
-        <div className=" w-full max-w-3xl text-slate-400">
+        <div className="w-full max-w-3xl text-slate-400 text-xs sm:text-sm">
           {`${Math.ceil(content.length / 100)} minute(s) read`}
         </div>
         <div className="w-full mt-6 h-0.5 bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
