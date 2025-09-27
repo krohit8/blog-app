@@ -18,7 +18,6 @@ export const Blogs = () => {
       </div>
     );
   }
-  console.log(blogs[0].author.name);
   return (
     <div className=" h-screen w-full  ">
       <div className="mb-8">
