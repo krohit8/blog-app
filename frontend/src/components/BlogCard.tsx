@@ -14,7 +14,6 @@ export const BlogCard = ({
   content,
   publishedDate,
 }: BlogCardProps) => {
-    console.log("authorname",authorName)
   return (
     <Link to={`/blog/${id}`}>
       <div className="  flex flex-col max-w-4xl mx-auto h-4/12    items-center  ">
