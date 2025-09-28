@@ -38,7 +38,10 @@ function AppRuotes() {
             path="/signin"
             element={isAuthenticated ? <Navigate to="/blogs" /> : <Signin />}
           />
-
+<Route
+            path="/"
+            element={isAuthenticated ? <Navigate to="/blogs" /> : <Signin />}
+          />
           <Route
             path="/blogs"
             element={isAuthenticated ? <Blogs /> : <Navigate to="/signin" />}
