@@ -1,11 +1,19 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import { Signup } from "./Pages/Signup";
 import { Signin } from "./Pages/Signin";
 import { Blogs } from "./Pages/Blogs";
 import { Blog } from "./Pages/Blog";
 import { useEffect } from "react";
 import { Publish } from "./Pages/Publish";
+import { AuthProvider } from "./context/AuthProvider";
+import { useAuth } from "./context/AuthContext";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -15,20 +23,44 @@ function ScrollToTop() {
   return null;
 }
 
-function App() {
+function AppRuotes() {
+  const { isAuthenticated } = useAuth();
   return (
     <>
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/blog/:id" element={<Blog />} />
-          <Route path="publish" element={<Publish/>}/>
+          <Route
+            path="/signup"
+            element={isAuthenticated ? <Navigate to="/blogs" /> : <Signup />}
+          />
+          <Route
+            path="/signin"
+            element={isAuthenticated ? <Navigate to="/blogs" /> : <Signin />}
+          />
+
+          <Route
+            path="/blogs"
+            element={isAuthenticated ? <Blogs /> : <Navigate to="/signin" />}
+          />
+          <Route
+            path="/blog/:id"
+            element={isAuthenticated ? <Blog /> : <Navigate to="/signin" />}
+          />
+          <Route
+            path="publish"
+            element={isAuthenticated ? <Publish /> : <Navigate to="/signin" />}
+          />
         </Routes>
       </BrowserRouter>
     </>
+  );
+}
+function App() {
+  return (
+    <AuthProvider>
+      <AppRuotes />
+    </AuthProvider>
   );
 }
 

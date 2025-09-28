@@ -1,7 +1,9 @@
 import { AuthForm } from "@/components/hookForm";
 import { signUpInput } from "@krohit8/blog-common";
 import { TextArea } from "@/components/textArea";
+import { useNavigate } from "react-router-dom";
 export const Signup = () => {
+  const navigate = useNavigate()
   return (
     <div className="w-full flex flex-col lg:flex-row h-screen">
       <div className="w-full lg:w-1/2 flex items-center h-full px-4 sm:px-6 lg:px-8">
@@ -10,13 +12,13 @@ export const Signup = () => {
             Create an account
           </h1>
           <h3 className="flex text-slate-400 text-sm sm:text-md mt-2 text-center">
-            Already have an account? <a className="underline ml-2">Login</a>
+            Already have an account? <a className="underline ml-2 cursor-pointer" onClick={() => navigate("/signin")}>Login</a>
           </h3>
 
           <AuthForm formType={signUpInput}/>
         </div>
       </div>
-      <div className="w-full lg:w-1/2 h-full flex hidden lg:flex">
+      <div className="w-full lg:w-1/2 h-full  hidden lg:flex">
         <TextArea/>
       </div>
     </div>
