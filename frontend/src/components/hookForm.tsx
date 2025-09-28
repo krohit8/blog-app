@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { BACKEND_URL } from "../../config";
+import { useAuth } from "../context/AuthContext";
 
 export function AuthForm({
   formType,
@@ -22,6 +23,7 @@ export function AuthForm({
   formType: typeof signUpInput | typeof signInInput;
 }) {
   const navigate = useNavigate();
+  const { setToken } = useAuth();
   const form = useForm<z.infer<typeof formType>>({
     resolver: zodResolver(formType),
     defaultValues: {
@@ -38,7 +40,7 @@ export function AuthForm({
           values
         );
         const token = response.data.token;
-        localStorage.setItem("token", token);
+        setToken(token);
         navigate("/blogs");
       } catch (error) {
         console.log(error instanceof Error ? error.message : error);
@@ -50,7 +52,7 @@ export function AuthForm({
           values
         );
         const token = response.data.token;
-        localStorage.setItem("token", token);
+        setToken(token);
         navigate("/blogs");
       } catch (error) {
         console.log(error instanceof Error ? error.message : error);

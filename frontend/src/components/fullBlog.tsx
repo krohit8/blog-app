@@ -10,7 +10,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
         <div className="w-full max-w-7xl flex flex-col lg:flex-row h-full mx-auto px-4">
           <div className="flex flex-col w-full lg:w-4/5 pt-4">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">{blog.title}</div>
-            <div className="text-base sm:text-lg lg:text-xl font-semibold text-slate-700 mt-4 leading-relaxed">
+            <div className="text-base sm:text-lg lg:text-xl font-semibold text-slate-700 mt-4 leading-relaxed whitespace-pre-wrap">
               {blog.content}
             </div>
           </div>
