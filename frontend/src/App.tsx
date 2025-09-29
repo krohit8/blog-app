@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { Publish } from "./Pages/Publish";
 import { AuthProvider } from "./context/AuthProvider";
 import { useAuth } from "./context/AuthContext";
+import { Spinner } from "./components/Spinner";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -24,7 +25,10 @@ function ScrollToTop() {
 }
 
 function AppRuotes() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <>
       <BrowserRouter>
@@ -38,7 +42,7 @@ function AppRuotes() {
             path="/signin"
             element={isAuthenticated ? <Navigate to="/blogs" /> : <Signin />}
           />
-<Route
+          <Route
             path="/"
             element={isAuthenticated ? <Navigate to="/blogs" /> : <Signin />}
           />
