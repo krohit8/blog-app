@@ -15,7 +15,7 @@ import { Publish } from "./Pages/Publish";
 import { AuthProvider } from "./context/AuthProvider";
 import { useAuth } from "./context/AuthContext";
 import { Spinner } from "./components/Spinner";
-
+import { Toaster } from "react-hot-toast";
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -33,6 +33,7 @@ function AppRuotes() {
     <>
       <BrowserRouter>
         <ScrollToTop />
+        <Toaster/>
         <Routes>
           <Route
             path="/signup"
