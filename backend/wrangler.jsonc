@@ -1,12 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "backend",
+  "name": "bloggr-backend",
   "main": "src/index.ts",
   "compatibility_date": "2025-09-15",
 
   
     // "compatibility_flags": [
-  //   "nodejs_compat"
+  //   "nodejs_compat"j
   // ],
   // "vars": {
   //   "MY_VAR": "my-variable"

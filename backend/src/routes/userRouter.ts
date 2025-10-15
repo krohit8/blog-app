@@ -19,7 +19,7 @@ userRouter.post("/signup", async (c) => {
 		return c.json({ error: "invalid input" });
   }
   try {
-    const hashedPassword = bcrypt.hashSync(body.password)
+    const hashedPassword =await bcrypt.hash(body.password,10)
     const user = await prisma.user.create({
       data: {
         email: body.email,
@@ -51,7 +51,7 @@ userRouter.post("/signin", async (c) => {
     c.status(403);
     return c.json({ error: "user not found" });
   }
-  const isValidPassword = bcrypt.compareSync(body.password,user.password)
+  const isValidPassword =await  bcrypt.compare(body.password,user.password)
   if (!isValidPassword) {
     c.status(401);
     return c.json({ error: "invalid pass" });
