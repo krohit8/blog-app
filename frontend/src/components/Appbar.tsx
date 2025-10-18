@@ -3,7 +3,7 @@ import { Avatar } from "./BlogCard";
 import { Link } from "react-router-dom";
 
 export const Appbar = () => {
-    const { logout}  = useAuth()
+    const { logout, user }  = useAuth()
   return (
     <div className="border-b flex justify-between px-4 sm:px-6 lg:px-10 py-4">
       <Link
@@ -30,7 +30,7 @@ export const Appbar = () => {
           <span className="hidden sm:inline">Logout</span>
           <span className="sm:hidden"><img src="https://imgs.search.brave.com/VK6CnPn7P-5cP8msjR18T2Wvuf57xIJCuHU4iyvm0ac/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzE1LzMzLzUwLzg2/LzM2MF9GXzE1MzM1/MDg2ODNfdTlZZ2hN/dTBZSFJ2ZXE0Tkxq/dVUwdVY2ZmNWNnQz/ZnYuanBn" className="w-11 h-11 "/></span>
         </button>
-        <Avatar size={"big"} name="Rohit" />
+        <Avatar size={"big"} name={user?.name || "User"} />
       </div>
     </div>
   );
