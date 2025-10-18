@@ -25,9 +25,10 @@ export const Appbar = () => {
         <button
           type="button"
           onClick={() => logout()}
-          className="text-white bg-[#ff637e]  hover:bg-[#ffa1ad] hover:cursor-pointer focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-xs sm:text-sm px-3 py-2 sm:px-5 sm:py-2.5 text-center"
+          className="text-white sm:bg-[#ff637e]  sm:hover:bg-[#ffa1ad] hover:cursor-pointer focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-xs sm:text-sm px-3 py-2 sm:px-5 sm:py-2.5 text-center"
         >
           <span className="hidden sm:inline">Logout</span>
+          <span className="sm:hidden"><img src="https://imgs.search.brave.com/VK6CnPn7P-5cP8msjR18T2Wvuf57xIJCuHU4iyvm0ac/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzE1LzMzLzUwLzg2/LzM2MF9GXzE1MzM1/MDg2ODNfdTlZZ2hN/dTBZSFJ2ZXE0Tkxq/dVUwdVY2ZmNWNnQz/ZnYuanBn" className="w-11 h-11 "/></span>
         </button>
         <Avatar size={"big"} name="Rohit" />
       </div>
