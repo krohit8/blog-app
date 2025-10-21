@@ -35,7 +35,7 @@ export const BlogCard = ({
           </p>
         </div>
         <div className="w-full max-w-3xl text-slate-400 text-xs sm:text-sm">
-          {`${Math.ceil(content.length / 100)} minute(s) read`}
+          {`${Math.max(1, Math.round(content.length / 200))} minute(s) read`}
         </div>
         <div className="w-full mt-6 h-0.5 bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
       </div>
