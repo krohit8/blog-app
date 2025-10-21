@@ -39,29 +39,35 @@ userRouter.post("/signup", async (c) => {
 });
 
 userRouter.post("/signin", async (c) => {
-  const prisma = createPrismaClient(c.env.DATABASE_URL);
-  const body = await c.req.json();
-  const { success } = signInInput.safeParse(body);
-  if (!success) {
-    c.status(400);
-    return c.json({ error: "invalid input" });
+  try {
+    const prisma = createPrismaClient(c.env.DATABASE_URL);
+    const body = await c.req.json();
+    const { success } = signInInput.safeParse(body);
+    if (!success) {
+      c.status(400);
+      return c.json({ error: "invalid input" });
+    }
+    const user = await prisma.user.findUnique({
+      where: {
+        email: body.email,
+      },
+    });
+    if (!user) {
+      c.status(403);
+      return c.json({ error: "user not found" });
+    }
+    const isValidPassword = await bcrypt.compare(body.password, user.password);
+    if (!isValidPassword) {
+      c.status(401);
+      return c.json({ error: "invalid pass" });
+    }
+    const token = await sign({ id: user.id }, c.env.JWT_SECRET);
+    return c.json({ token });
+  } catch (error) {
+    console.error("Signin error:", error);
+    c.status(500);
+    return c.json({ error: "Internal server error", details: error instanceof Error ? error.message : String(error) });
   }
-  const user = await prisma.user.findUnique({
-    where: {
-      email: body.email,
-    },
-  });
-  if (!user) {
-    c.status(403);
-    return c.json({ error: "user not found" });
-  }
-  const isValidPassword = await bcrypt.compare(body.password, user.password);
-  if (!isValidPassword) {
-    c.status(401);
-    return c.json({ error: "invalid pass" });
-  }
-  const token = await sign({ id: user.id }, c.env.JWT_SECRET);
-  return c.json({ token });
 });
 
 userRouter.get("/me", authMiddleware, async (c) => {
