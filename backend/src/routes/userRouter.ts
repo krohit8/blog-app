@@ -64,12 +64,12 @@ userRouter.post("/signin", async (c) => {
   return c.json({ token });
 });
 
-userRouter.get("/me",authMiddleware, async (c) => {
+userRouter.get("/me", authMiddleware, async (c) => {
   const prisma = createPrismaClient(c.env.DATABASE_URL);
   const userId = c.get("userId");
-  if(!userId){
+  if (!userId) {
     c.status(401);
-    return c.json({message:"unauthorized"})
+    return c.json({ message: "unauthorized" });
   }
   const user = await prisma.user.findUnique({
     where: {
@@ -85,6 +85,6 @@ userRouter.get("/me",authMiddleware, async (c) => {
     c.status(404);
     return c.json({ error: "User not found" });
   }
-  console.log("user",user)
+  console.log("user", user);
   return c.json({ user });
 });
