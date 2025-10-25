@@ -93,7 +93,7 @@ export function AuthForm({
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="enter your password" {...field} />
+                  <Input type="password" placeholder="enter your password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
