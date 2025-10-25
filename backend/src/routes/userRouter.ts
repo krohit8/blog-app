@@ -34,7 +34,9 @@ userRouter.post("/signup", async (c) => {
     const token = await sign({ id: user.id }, c.env.JWT_SECRET);
     return c.json({ token });
   } catch (error) {
-    return c.status(403);
+    console.error("Signup error:", error);
+    c.status(403);
+    return c.json({ error: "User already exists or database error" });
   }
 });
 
@@ -66,7 +68,10 @@ userRouter.post("/signin", async (c) => {
   } catch (error) {
     console.error("Signin error:", error);
     c.status(500);
-    return c.json({ error: "Internal server error", details: error instanceof Error ? error.message : String(error) });
+    return c.json({
+      error: "Internal server error",
+      details: error instanceof Error ? error.message : String(error),
+    });
   }
 });
 

@@ -1,15 +1,13 @@
 import { Appbar } from "@/components/Appbar";
 import { FullBlog } from "@/components/fullBlog";
 import { Spinner } from "@/components/Spinner";
-import { useBlog } from "@/hooks";
+import { useBlog } from "@/react-query/queries";
 import { useParams } from "react-router-dom";
 
 export const Blog = () => {
   const { id } = useParams();
-  const { loading, blog } = useBlog({
-    id: id || "",
-  });
-  if (loading || !blog) {
+  const { isLoading, data:blog } = useBlog(id || "");
+  if (isLoading || !blog) {
     return (
       <div>
         <Appbar />

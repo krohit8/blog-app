@@ -1,30 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { AuthContext,type User } from "./AuthContext";
-import { BACKEND_URL } from "../../config";
-import axios from "axios";
+import { AuthContext } from "./AuthContext";
+import { useUserMe } from "@/react-query/queries";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setTokenState] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
-
-  const fetchUser = useCallback(async () => {
-    if (!token) {
-      setUser(null);
-      return;
-    }
-    try {
-      const response = await axios.get(`${BACKEND_URL}/api/v1/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setUser(response.data.user);
-    } catch (error) {
-      console.log("failed to fetch user", error);
-
-    }
-  }, [token]);
+  
+  // Use React Query to fetch user data
+  const { data: userData, refetch } = useUserMe();
+  const user = userData?.user || null;
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
@@ -36,9 +20,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (token && !user) {
-      fetchUser();
+      refetch();
     }
-  }, [fetchUser, token, user]);
+  }, [token, user, refetch]);
+
+  const fetchUser = useCallback(async () => {
+    await refetch();
+  }, [refetch]);
 
   const setToken = useCallback((newToken: string | null) => {
     if (newToken) {
@@ -47,7 +35,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } else {
       localStorage.removeItem("token");
       setTokenState(null);
-      setUser(null);
     }
   }, []);
 
