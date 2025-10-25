@@ -3,6 +3,10 @@ import { PrismaClient } from "../src/generated/prisma/edge";
 
 export function createPrismaClient(databaseUrl: string) {
   return new PrismaClient({
-    datasourceUrl: databaseUrl,
+    datasources: {
+      db: {
+        url: databaseUrl,
+      },
+    },
   }).$extends(withAccelerate());
 }
