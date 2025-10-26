@@ -29,7 +29,9 @@ export const BlogCard = ({
           </p>
         </div>
         <div className="flex flex-col w-full max-w-3xl">
-          <h1 className="font-bold text-xl sm:text-2xl lg:text-3xl leading-tight">{title}</h1>
+          <h1 className="font-bold text-xl sm:text-2xl lg:text-3xl leading-tight">
+            {title}
+          </h1>
           <p className="py-2 font-semibold text-gray-700 text-sm sm:text-base">
             {content.slice(0, 120) + (content.length > 120 ? "..." : "")}
           </p>

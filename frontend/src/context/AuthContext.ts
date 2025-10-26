@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react";
 
 export interface User {
-  id: string,
-  name: string,
-  email:string
+  id: string;
+  name: string;
+  email: string;
 }
 
 interface authContextType {
@@ -13,10 +13,10 @@ interface authContextType {
   isAuthenticated: boolean;
   logout: () => void;
   user: User | null;
-  fetchUser : () => Promise<void>;
+  fetchUser: () => Promise<void>;
 }
 export const AuthContext = createContext<authContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export const useAuth = () => {

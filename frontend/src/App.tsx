@@ -33,7 +33,7 @@ function AppRuotes() {
     <>
       <BrowserRouter>
         <ScrollToTop />
-        <Toaster/>
+        <Toaster />
         <Routes>
           <Route
             path="/signup"
