@@ -16,9 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { BACKEND_URL } from "../../config";
 import { useAuth } from "../context/AuthContext";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 import { Spinner } from "./Spinner";
-
 
 export function AuthForm({
   formType,
@@ -36,36 +35,39 @@ export function AuthForm({
     },
   });
   async function onSubmit(values: z.infer<typeof formType>) {
-    
     if (formType === signUpInput) {
       try {
         const response = await axios.post(
           `${BACKEND_URL}/api/v1/user/signup`,
-          values
+          values,
         );
         const token = response.data.token;
         setToken(token);
         navigate("/blogs");
       } catch (error) {
         console.log(error instanceof Error ? error.message : error);
-        toast("Email already registered!", { style:{
-          border:'2px solid pink' ,
-        }})
+        toast("Email already registered!", {
+          style: {
+            border: "2px solid pink",
+          },
+        });
       }
     } else {
       try {
         const response = await axios.post(
           `${BACKEND_URL}/api/v1/user/signin`,
-          values
+          values,
         );
         const token = response.data.token;
         setToken(token);
         navigate("/blogs");
       } catch (error) {
         console.log(error instanceof Error ? error.message : error);
-        toast("Invalid Username or Password", { style:{
-          border:'2px solid pink' ,
-        }})
+        toast("Invalid Username or Password", {
+          style: {
+            border: "2px solid pink",
+          },
+        });
       }
     }
   }
@@ -93,7 +95,11 @@ export function AuthForm({
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="enter your password" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="enter your password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -116,9 +122,15 @@ export function AuthForm({
           ) : (
             <div className="hidden"></div>
           )}
-          
+
           <Button type="submit" className="w-full h-10 cursor-pointer">
-            {form.formState.isSubmitting? <Spinner/> : (formType === signUpInput ? "Signup" : "Signin")}
+            {form.formState.isSubmitting ? (
+              <Spinner />
+            ) : formType === signUpInput ? (
+              "Signup"
+            ) : (
+              "Signin"
+            )}
           </Button>
         </form>
       </Form>

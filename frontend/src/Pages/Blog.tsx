@@ -24,7 +24,6 @@ export const Blog = () => {
 
   return (
     <div>
-        
       <FullBlog blog={blog} />
     </div>
   );

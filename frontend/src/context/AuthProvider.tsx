@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { AuthContext,type User } from "./AuthContext";
+import { AuthContext, type User } from "./AuthContext";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 
@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(response.data.user);
     } catch (error) {
       console.log("failed to fetch user", error);
-
     }
   }, [token]);
 
@@ -67,7 +66,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       user,
       fetchUser,
     }),
-    [token, loading, setToken, isAuthenticated, logout, user, fetchUser]
+    [token, loading, setToken, isAuthenticated, logout, user, fetchUser],
   );
 
   return (
