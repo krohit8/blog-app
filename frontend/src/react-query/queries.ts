@@ -101,10 +101,10 @@ export function useUpdateBlog() {
   return useMutation({
     mutationFn: (data: { id: string; title?: string; content?: string }) =>
       updateBlog(data),
-    onSuccess: (_, varaibles) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.GET_ALL_BLOGS] });
       queryClient.invalidateQueries({
-        queryKey: [queryKeys.GET_BLOG, varaibles.id],
+        queryKey: [queryKeys.GET_BLOG, variables.id],
       });
     },
   });
