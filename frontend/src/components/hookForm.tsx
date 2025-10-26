@@ -1,8 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+
 import { signUpInput, signInInput } from "@krohit8/blog-common";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,18 +13,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { BACKEND_URL } from "../../config";
-import { useAuth } from "../context/AuthContext";
-import toast from "react-hot-toast";
+import toast from 'react-hot-toast';
 import { Spinner } from "./Spinner";
+import { useCreateUserAccount, useSignInAccount } from "@/react-query/queries";
 
 export function AuthForm({
   formType,
 }: {
   formType: typeof signUpInput | typeof signInInput;
 }) {
-  const navigate = useNavigate();
-  const { setToken } = useAuth();
+  const {mutate: signUp  , isPending: isSigningUp } = useCreateUserAccount()
+  const {mutate: signIn  , isPending: isSigningIn} = useSignInAccount()
   const form = useForm<z.infer<typeof formType>>({
     resolver: zodResolver(formType),
     defaultValues: {
@@ -34,16 +32,11 @@ export function AuthForm({
       name: "",
     },
   });
+  const isLoading = formType === signUpInput? isSigningUp : isSigningIn
   async function onSubmit(values: z.infer<typeof formType>) {
     if (formType === signUpInput) {
       try {
-        const response = await axios.post(
-          `${BACKEND_URL}/api/v1/user/signup`,
-          values,
-        );
-        const token = response.data.token;
-        setToken(token);
-        navigate("/blogs");
+        signUp(values)
       } catch (error) {
         console.log(error instanceof Error ? error.message : error);
         toast("Email already registered!", {
@@ -54,13 +47,7 @@ export function AuthForm({
       }
     } else {
       try {
-        const response = await axios.post(
-          `${BACKEND_URL}/api/v1/user/signin`,
-          values,
-        );
-        const token = response.data.token;
-        setToken(token);
-        navigate("/blogs");
+        signIn(values)
       } catch (error) {
         console.log(error instanceof Error ? error.message : error);
         toast("Invalid Username or Password", {
@@ -122,15 +109,9 @@ export function AuthForm({
           ) : (
             <div className="hidden"></div>
           )}
-
-          <Button type="submit" className="w-full h-10 cursor-pointer">
-            {form.formState.isSubmitting ? (
-              <Spinner />
-            ) : formType === signUpInput ? (
-              "Signup"
-            ) : (
-              "Signin"
-            )}
+          
+          <Button type="submit" className="w-full h-10 cursor-pointer" disabled={isLoading}>
+            {isLoading? <Spinner/> : (formType === signUpInput ? "Signup" : "Signin")}
           </Button>
         </form>
       </Form>

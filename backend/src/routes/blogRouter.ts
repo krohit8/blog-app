@@ -60,6 +60,10 @@ blogRouter.put("/", async (c) => {
 blogRouter.get("/bulk", async (c) => {
   const prisma = createPrismaClient(c.env.DATABASE_URL);
   const post = await prisma.post.findMany({
+    orderBy: {
+      createdAt: 'desc', // Show newest first
+    },
+    take: 100, // Limit to 100 posts for faster loading
     include: {
       author: {
         select: {

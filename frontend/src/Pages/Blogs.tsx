@@ -1,11 +1,12 @@
 import { Appbar } from "@/components/Appbar";
 import { BlogCard } from "@/components/BlogCard";
 import { BlogSkeleton } from "@/components/blogSkeleton";
-import { useBlogs } from "@/hooks";
+// import { useBlogs } from "@/hooks";
+import { useBlogs } from "@/react-query/queries";
 
 export const Blogs = () => {
-  const { loading, blogs } = useBlogs();
-  if (loading) {
+  const { isLoading, data: blogs } = useBlogs();
+  if (isLoading || !blogs) {
     return (
       <div>
         <Appbar />
