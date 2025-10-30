@@ -11,7 +11,15 @@ type Bindings = {
 }
 const app = new Hono<{Bindings: Bindings}>()
 
-app.use(cors())
+app.use(cors({
+    origin:["https://bloggr.krohit.me",'http://localhost:5173'],
+    credentials: true,
+    allowMethods: ['GET','POST', 'PUT', 'OPTIONS'],
+    allowHeaders: ['Content-Type','Authorization'],
+    exposeHeaders: ['Content-Length','X-Request-Id'],
+    maxAge:86400
+}))
+
 app.use(limiter)
 app.route("api/v1/user", userRouter)
 app.route("api/v1/blog/",blogRouter)
