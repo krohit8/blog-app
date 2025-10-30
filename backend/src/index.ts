@@ -3,7 +3,13 @@ import { userRouter } from './routes/userRouter'
 import { blogRouter } from './routes/blogRouter';
 import {cors} from "hono/cors"
 import { limiter } from './rateLimiter';
-const app = new Hono()
+
+type Bindings = {
+    DATABASE_URL: string;
+    JWT_SECRET: string;
+    RATE_LIMITER: any;
+}
+const app = new Hono<{Bindings: Bindings}>()
 
 app.use(cors())
 app.use(limiter)
