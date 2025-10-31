@@ -53,15 +53,16 @@ userRouter.post("/signin", async (c) => {
       where: {
         email: body.email,
       },
+      select:{
+        id:true,
+        password:true
+      }
     });
-    if (!user) {
-      c.status(403);
-      return c.json({ error: "user not found" });
-    }
-    const isValidPassword = await bcrypt.compare(body.password, user.password);
-    if (!isValidPassword) {
+    const passwordToCompare = user?.password || "$2a$10$FakeHashToPreventTimingAttacks1234567890";
+    const isValidPassword = await bcrypt.compare(body.password, passwordToCompare)
+    if (!user || !isValidPassword) {
       c.status(401);
-      return c.json({ error: "invalid pass" });
+      return c.json({ error: "Invalid email or password" });
     }
     const token = await sign({ id: user.id }, c.env.JWT_SECRET);
     return c.json({ token });
@@ -70,7 +71,6 @@ userRouter.post("/signin", async (c) => {
     c.status(500);
     return c.json({
       error: "Internal server error",
-      details: error instanceof Error ? error.message : String(error),
     });
   }
 });
@@ -96,6 +96,5 @@ userRouter.get("/me", authMiddleware, async (c) => {
     c.status(404);
     return c.json({ error: "User not found" });
   }
-  console.log("user", user);
   return c.json({ user });
 });
