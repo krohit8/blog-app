@@ -14,7 +14,7 @@ const app = new Hono<{Bindings: Bindings}>()
 app.use(cors({
     origin:["https://bloggr.krohit.me",'http://localhost:5173'],
     credentials: true,
-    allowMethods: ['GET','POST', 'PUT', 'OPTIONS'],
+    allowMethods: ['GET','POST', 'PUT','DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type','Authorization'],
     exposeHeaders: ['Content-Length','X-Request-Id'],
     maxAge:86400
