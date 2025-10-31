@@ -11,6 +11,7 @@ type Bindings = {
 }
 const app = new Hono<{Bindings: Bindings}>()
 
+
 app.use(cors({
     origin:["https://bloggr.krohit.me",'http://localhost:5173'],
     credentials: true,
@@ -24,4 +25,37 @@ app.use(limiter)
 app.route("api/v1/user", userRouter)
 app.route("api/v1/blog/",blogRouter)
 
-export default app
+function validateEnvironment(env: Bindings){
+    const errors : string[] = [];
+    if(!env.JWT_SECRET || env.JWT_SECRET === "undefined"){
+        errors.push('JWT_SECRET is not set in Cloudflare dashboard')
+    }
+    if(!env.DATABASE_URL || env.DATABASE_URL === "undefined"){
+        errors.push('DATBASE_URL is not set')
+    }
+    if(errors.length > 0){
+        console.log("FATAL ERRORS",errors)
+        throw new Error(errors.join(", "));
+    }
+}
+
+export default{
+    async fetch(request: Request, env: Bindings, ctx: any){
+        try {
+            validateEnvironment(env)
+            return app.fetch(request, env,ctx)
+        } catch (error) {
+            console.error('Environment validation failed:', error);
+            return new Response(
+                JSON.stringify({
+                    error:"server misconfigured"
+                }),{
+                    status:500,
+                    headers:{'Content-Type':"application/json"}
+                }
+            )
+        }
+    }
+}
+
+
