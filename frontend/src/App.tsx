@@ -16,6 +16,7 @@ import { AuthProvider } from "./context/AuthProvider";
 import { useAuth } from "./context/AuthContext";
 import { Spinner } from "./components/Spinner";
 import { Toaster } from "react-hot-toast";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -66,9 +67,11 @@ function AppRuotes() {
 }
 function App() {
   return (
-    <AuthProvider>
-      <AppRuotes />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <AppRuotes />
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 
