@@ -32,4 +32,9 @@ model Post {
   authorId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([authorId])
+  @@index([createdAt])
+  @@index([published])
+  @@index([authorId,createdAt])
 }
