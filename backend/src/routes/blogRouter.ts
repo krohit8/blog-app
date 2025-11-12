@@ -58,12 +58,13 @@ blogRouter.put("/", async (c) => {
 });
 
 blogRouter.get("/bulk", async (c) => {
+  c.header('Cache-Control','public, max-age=300')
   const prisma = createPrismaClient(c.env.DATABASE_URL);
   const post = await prisma.post.findMany({
     orderBy: {
-      createdAt: 'desc', // Show newest first
+      createdAt: 'desc',
     },
-    take: 100, // Limit to 100 posts for faster loading
+    take: 100,
     include: {
       author: {
         select: {
@@ -76,6 +77,7 @@ blogRouter.get("/bulk", async (c) => {
 });
 
 blogRouter.get("/:id", async (c) => {
+  c.header('Cache-Control','public, max-age=600')
   const prisma = createPrismaClient(c.env.DATABASE_URL);
   const id = c.req.param("id");
   const post = await prisma.post.findUnique({
