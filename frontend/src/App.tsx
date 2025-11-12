@@ -6,12 +6,12 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
-import { Signup } from "./Pages/Signup";
-import { Signin } from "./Pages/Signin";
-import { Blogs } from "./Pages/Blogs";
-import { Blog } from "./Pages/Blog";
-import { useEffect } from "react";
-import { Publish } from "./Pages/Publish";
+import { lazy, Suspense, useEffect } from "react";
+const Signup = lazy(() => import("./Pages/Signup"));
+const Signin = lazy(() => import("./Pages/Signin"));
+const Blogs = lazy(() => import("./Pages/Blogs"));
+const Blog = lazy(() => import("./Pages/Blog"));
+const Publish = lazy(() => import("./Pages/Publish"));
 import { AuthProvider } from "./context/AuthProvider";
 import { useAuth } from "./context/AuthContext";
 import { Spinner } from "./components/Spinner";
@@ -35,32 +35,36 @@ function AppRuotes() {
       <BrowserRouter>
         <ScrollToTop />
         <Toaster />
-        <Routes>
-          <Route
-            path="/signup"
-            element={isAuthenticated ? <Navigate to="/blogs" /> : <Signup />}
-          />
-          <Route
-            path="/signin"
-            element={isAuthenticated ? <Navigate to="/blogs" /> : <Signin />}
-          />
-          <Route
-            path="/"
-            element={isAuthenticated ? <Navigate to="/blogs" /> : <Signin />}
-          />
-          <Route
-            path="/blogs"
-            element={isAuthenticated ? <Blogs /> : <Navigate to="/signin" />}
-          />
-          <Route
-            path="/blog/:id"
-            element={isAuthenticated ? <Blog /> : <Navigate to="/signin" />}
-          />
-          <Route
-            path="publish"
-            element={isAuthenticated ? <Publish /> : <Navigate to="/signin" />}
-          />
-        </Routes>
+        <Suspense fallback={<Spinner />}>
+          <Routes>
+            <Route
+              path="/signup"
+              element={isAuthenticated ? <Navigate to="/blogs" /> : <Signup />}
+            />
+            <Route
+              path="/signin"
+              element={isAuthenticated ? <Navigate to="/blogs" /> : <Signin />}
+            />
+            <Route
+              path="/"
+              element={isAuthenticated ? <Navigate to="/blogs" /> : <Signin />}
+            />
+            <Route
+              path="/blogs"
+              element={isAuthenticated ? <Blogs /> : <Navigate to="/signin" />}
+            />
+            <Route
+              path="/blog/:id"
+              element={isAuthenticated ? <Blog /> : <Navigate to="/signin" />}
+            />
+            <Route
+              path="publish"
+              element={
+                isAuthenticated ? <Publish /> : <Navigate to="/signin" />
+              }
+            />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </>
   );

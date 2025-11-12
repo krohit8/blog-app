@@ -4,9 +4,9 @@ import { Spinner } from "@/components/Spinner";
 import { useBlog } from "@/react-query/queries";
 import { useParams } from "react-router-dom";
 
-export const Blog = () => {
+export default function Blog() {
   const { id } = useParams();
-  const { isLoading, data:blog } = useBlog(id || "");
+  const { isLoading, data: blog } = useBlog(id || "");
   if (isLoading || !blog) {
     return (
       <div>
@@ -25,4 +25,4 @@ export const Blog = () => {
       <FullBlog blog={blog} />
     </div>
   );
-};
+}

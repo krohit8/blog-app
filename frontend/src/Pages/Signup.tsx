@@ -2,7 +2,7 @@ import { AuthForm } from "@/components/hookForm";
 import { signUpInput } from "@krohit8/blog-common";
 import { TextArea } from "@/components/textArea";
 import { useNavigate } from "react-router-dom";
-export const Signup = () => {
+export default function Signup() {
   const navigate = useNavigate();
   return (
     <div className="w-full flex flex-col lg:flex-row h-screen">
@@ -29,4 +29,4 @@ export const Signup = () => {
       </div>
     </div>
   );
-};
+}

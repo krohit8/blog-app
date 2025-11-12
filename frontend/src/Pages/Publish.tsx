@@ -4,7 +4,7 @@ import { type ChangeEvent, useState } from "react";
 import { useCreateBlog } from "@/react-query/queries";
 import toast from "react-hot-toast";
 
-export const Publish = () => {
+export default function Publish() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export const Publish = () => {
           console.error("Failed to publish:", error);
           toast.error("Failed to publish blog");
         },
-      }
+      },
     );
   };
 
@@ -60,7 +60,7 @@ export const Publish = () => {
       </div>
     </div>
   );
-};
+}
 
 function TextEditor({
   onChange,

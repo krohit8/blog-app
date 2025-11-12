@@ -1,10 +1,9 @@
 import { Appbar } from "@/components/Appbar";
 import { BlogCard } from "@/components/BlogCard";
 import { BlogSkeleton } from "@/components/blogSkeleton";
-// import { useBlogs } from "@/hooks";
 import { useBlogs } from "@/react-query/queries";
 
-export const Blogs = () => {
+export default function Blogs() {
   const { isLoading, data: blogs } = useBlogs();
   if (isLoading || !blogs) {
     return (
@@ -38,4 +37,4 @@ export const Blogs = () => {
       </div>
     </div>
   );
-};
+}
