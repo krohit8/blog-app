@@ -10,6 +10,7 @@ export interface Blog {
   published: boolean;
   author: {
     name: string;
+    id: string;
   };
 }
 

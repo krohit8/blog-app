@@ -1,8 +1,13 @@
 import { type Blog } from "@/api/api";
 import { Appbar } from "./Appbar";
 import { Avatar } from "./BlogCard";
-
+import { Button } from "./ui/button";
+import {  useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 export const FullBlog = ({ blog }: { blog: Blog }) => {
+  const navigate = useNavigate()
+  const {user} = useAuth()
+  const isAuthor = user?.id === blog.author.id;
   return (
     <div>
       <Appbar />
@@ -31,6 +36,13 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
               <div className="text-gray-700 text-sm lg:text-base">
                 The only way to do great work is to love what you do
               </div>
+              {
+                isAuthor && (
+                  <Button onClick={() => navigate(`/publish?edit=${blog.id}`
+                  
+                  )} className="mt-4">Edit Post</Button>
+                )
+              }
             </div>
           </div>
         </div>

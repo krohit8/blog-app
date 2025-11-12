@@ -1,14 +1,30 @@
 import { Appbar } from "../components/Appbar";
-import { useNavigate } from "react-router-dom";
-import { type ChangeEvent, useState } from "react";
-import { useCreateBlog } from "@/react-query/queries";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { type ChangeEvent, useEffect, useState } from "react";
+import { useBlog, useCreateBlog, useUpdateBlog } from "@/react-query/queries";
 import toast from "react-hot-toast";
+import { Spinner } from "@/components/Spinner";
 
 export default function Publish() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
-  const { mutate: createBlog, isPending } = useCreateBlog();
+  const [searchParams] = useSearchParams();
+
+  const editId = searchParams.get("edit");
+  const isEditMode = !!editId;
+
+  const { data: existingBlog, isLoading: loadingBlog } = useBlog(editId || "");
+
+  const { mutate: createBlog, isPending: isCreating } = useCreateBlog();
+  const { mutate: updateBlog, isPending: isUpdating } = useUpdateBlog();
+  const isPending = isCreating || isUpdating;
+  useEffect(() => {
+    if (isEditMode && existingBlog) {
+      setTitle(existingBlog.title);
+      setDescription(existingBlog.content);
+    }
+  }, [existingBlog, isEditMode]);
 
   const handlePublish = () => {
     if (!title.trim() || !description.trim()) {
@@ -16,20 +32,50 @@ export default function Publish() {
       return;
     }
 
-    createBlog(
-      { title, content: description },
-      {
-        onSuccess: (data) => {
-          toast.success("Blog published successfully!");
-          navigate(`/blog/${data.id}`);
+    if (isEditMode && editId) {
+      updateBlog(
+        {
+          id: editId,
+          title,
+          content: description,
         },
-        onError: (error) => {
-          console.error("Failed to publish:", error);
-          toast.error("Failed to publish blog");
+        {
+          onSuccess: () => {
+            toast.success("Blog updated successfully!");
+            navigate(`/blog/${editId}`);
+          },
+          onError: (error) => {
+            console.error("Failed to update:", error);
+            toast.error("Failed to update blog");
+          },
         },
-      },
-    );
+      );
+    } else {
+      createBlog(
+        { title, content: description },
+        {
+          onSuccess: (data) => {
+            toast.success("Blog published successfully!");
+            navigate(`/blog/${data.id}`);
+          },
+          onError: (error) => {
+            console.error("Failed to publish:", error);
+            toast.error("Failed to publish blog");
+          },
+        },
+      );
+    }
   };
+  if (isEditMode && loadingBlog) {
+    return (
+      <div>
+        <Appbar />
+        <div className="flex h-screen justify-center items-center">
+          <Spinner />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -54,7 +100,21 @@ export default function Publish() {
             type="submit"
             className="mt-4 inline-flex items-center px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800 w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isPending ? "Publishing..." : "Publish post"}
+            {isPending
+              ? isEditMode
+                ? "Updating"
+                : "Publishing..."
+              : isEditMode
+                ? "Update Post"
+                : "Publish post"}
+          </button>
+
+          <button
+            onClick={() => navigate(-1)}
+            type="button"
+            className="mt-4 inline-flex items-center px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-center text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 w-full sm:w-auto"
+          >
+            Cancel
           </button>
         </div>
       </div>
